@@ -3,16 +3,24 @@ package main
 import (
 	"bufio"
 	"fmt"
-
-	// Uncomment this block to pass the first stage
-	// "fmt"
 	"os"
 )
 
+func parseLine(line string) {
+	// Remove newline character
+	line = line[:len(line)-1]
+	fmt.Println(line + ": command not found")
+}
+
 func main() {
-	// Uncomment this block to pass the first stage
 	fmt.Fprint(os.Stdout, "$ ")
 
 	// Wait for user input
-	bufio.NewReader(os.Stdin).ReadString('\n')
+	line, err := bufio.NewReader(os.Stdin).ReadString('\n')
+
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+	parseLine(line)
 }
