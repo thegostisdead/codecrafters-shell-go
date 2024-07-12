@@ -13,14 +13,16 @@ func parseLine(line string) {
 }
 
 func main() {
-	fmt.Fprint(os.Stdout, "$ ")
+	for {
+		fmt.Fprint(os.Stdout, "$ ")
 
-	// Wait for user input
-	line, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		// Wait for user input
+		line, err := bufio.NewReader(os.Stdin).ReadString('\n')
 
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return
+		}
+		parseLine(line)
 	}
-	parseLine(line)
 }
