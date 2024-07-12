@@ -41,11 +41,23 @@ func doType(args []string) {
 	cmd := args[1]
 	if contains(builtInCommands, cmd) {
 		fmt.Println(cmd + " is a shell builtin")
+	} else if searchBinInPath(cmd) != "" {
+		fmt.Println(cmd + " is " + searchBinInPath(cmd))
 	} else {
 		fmt.Println(cmd + ": not found")
 	}
 }
+func searchBinInPath(cmd string) string {
+	path := os.Getenv("PATH")
+	paths := strings.Split(path, ":")
+	for _, p := range paths {
+		if _, err := os.Stat(p + "/" + cmd); err == nil {
+			return p + "/" + cmd
+		}
 
+	}
+	return ""
+}
 func contains(commands []string, cmd string) bool {
 
 	for _, c := range commands {
