@@ -31,6 +31,18 @@ func parseLine(line string) {
 
 	}
 
+	if strings.HasPrefix(line, "echo") {
+		// get echo args
+		args := strings.Split(line, " ")
+		if len(args) <= 1 {
+			fmt.Println("echo: need 1 argument")
+			return
+		}
+		fmt.Println(strings.Join(args[1:], " "))
+		return
+
+	}
+
 	fmt.Println(line + ": command not found")
 }
 
