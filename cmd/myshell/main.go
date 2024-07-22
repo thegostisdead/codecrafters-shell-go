@@ -89,8 +89,15 @@ func doCd(args []string) {
 		return
 	}
 	dir := args[1]
+
+	if strings.HasPrefix(dir, "~") {
+		// replace ~ with home directory
+		dir = os.Getenv("HOME") + strings.Replace(args[1], "~", "/", -1)
+	}
+
 	err := os.Chdir(dir)
 	if err != nil {
+		fmt.Println(err)
 		fmt.Println("cd: " + dir + ": No such file or directory")
 	}
 }
