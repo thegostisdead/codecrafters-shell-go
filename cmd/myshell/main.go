@@ -10,7 +10,7 @@ import (
 )
 
 // shell built-in commands
-var builtInCommands = []string{"echo", "exit", "type"}
+var builtInCommands = []string{"echo", "exit", "type", "pwd"}
 
 func doEcho(args []string) {
 	if len(args) <= 1 {
@@ -69,6 +69,15 @@ func contains(commands []string, cmd string) bool {
 	return false
 }
 
+func doPwd() {
+	dir, err := os.Getwd()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+	fmt.Println(dir)
+}
+
 func parseLine(line string) {
 	line = line[:len(line)-1]
 	args := strings.Split(line, " ")
@@ -80,6 +89,8 @@ func parseLine(line string) {
 		doExit(args)
 	case "type":
 		doType(args)
+	case "pwd":
+		doPwd()
 	default:
 		binPath := searchBinInPath(args[0])
 		if binPath != "" {
