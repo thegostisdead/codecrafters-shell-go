@@ -97,7 +97,6 @@ func doCd(args []string) {
 
 	err := os.Chdir(dir)
 	if err != nil {
-		fmt.Println(err)
 		fmt.Println("cd: " + dir + ": No such file or directory")
 	}
 }
