@@ -10,7 +10,7 @@ import (
 )
 
 // shell built-in commands
-var builtInCommands = []string{"echo", "exit", "type", "pwd"}
+var builtInCommands = []string{"echo", "exit", "type", "pwd", "cd"}
 
 func doEcho(args []string) {
 	if len(args) <= 1 {
@@ -78,6 +78,23 @@ func doPwd() {
 	fmt.Println(dir)
 }
 
+func doCd(args []string) {
+
+	if len(args) <= 1 {
+		// go to home directory
+		err := os.Chdir(os.Getenv("HOME"))
+		if err != nil {
+			fmt.Println(err)
+		}
+		return
+	}
+	dir := args[1]
+	err := os.Chdir(dir)
+	if err != nil {
+		fmt.Println("cd: " + dir + ": No such file or directory")
+	}
+}
+
 func parseLine(line string) {
 	line = line[:len(line)-1]
 	args := strings.Split(line, " ")
@@ -91,6 +108,8 @@ func parseLine(line string) {
 		doType(args)
 	case "pwd":
 		doPwd()
+	case "cd":
+		doCd(args)
 	default:
 		binPath := searchBinInPath(args[0])
 		if binPath != "" {
