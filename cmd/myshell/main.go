@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 )
@@ -80,7 +81,20 @@ func parseLine(line string) {
 	case "type":
 		doType(args)
 	default:
-		fmt.Println(line + ": command not found")
+		binPath := searchBinInPath(args[0])
+		if binPath != "" {
+			command := exec.Command(args[0], args[1:]...)
+			command.Stderr = os.Stderr
+			command.Stdout = os.Stdout
+			err := command.Run()
+			if err != nil {
+				fmt.Printf("%s: command not found\n", args[0])
+				return
+			}
+
+		} else {
+			fmt.Println(line + ": command not found")
+		}
 	}
 
 }
